@@ -1,0 +1,112 @@
+.scroll, #map_canvas { height: 100%;}
+.item-input { padding-left: 8px;}
+.item-input i { margin-right: 3px;}
+
+.pac-container {
+    background-color: transparent;
+    box-shadow:none;
+    width:93.5% !important;
+    left:3.25% !important;
+    top: auto !important;
+    bottom:44px !important;
+}
+
+.pac-item{
+    background-color: white      	
+}
+
+#type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+}
+#pac-input{ 
+    width: auto;     	
+}
+.pac-container:after {  /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+    background-image: none !important;
+    height: 0px;
+}
+
+#geo{
+    position: absolute;
+    right: 5px;
+    top: 35px;
+}
+#geo button{
+    background-color: #fff;
+    border: 1px solid #aaa;
+    line-height: 25px !important;
+    min-height: 25px !important;
+    color: rgb(86, 86, 86);
+    font-family: Roboto, Arial, sans-serif;
+    font-size:11px;
+    width:89px;
+}
+#geo button:before{
+    display: inline-block;
+    margin:0 7px 0 0 ;
+    padding-top: 5px;
+    color: #666;
+    font-size:16px;
+}
+.buttons button:before{
+    margin:0 2px 0 0 ;
+    font-size:26px !important;
+}
+.buttons button{
+    border:1px solid #ddd !important;
+    margin-top: -1px;
+    background-color: #fff !important;
+}
+.buttons{
+    height:35px;
+}
+button.ion-location:before,button.ion-map:before{
+    margin-right: 10px;
+    font-size: 17px;
+    margin-top: 4px;
+}
+
+#search{
+    width: 95%;
+    min-width: 225px;
+}
+#destin button,#list button{
+    width:35px;
+}
+#destin,#list{
+    width: 2%;
+    min-width: 35px;text-align: right;
+}
+#footer{
+    background-color: transparent !important;
+    bottom: 3px !important;
+    border-top:none !important;
+}
+#ctoggle{
+    border:none;
+    background-color: transparent;
+    line-height: 15px;
+}
+a{
+    color:blue;
+}
+em{
+    font-style: italic;
+    font-family: monospace;
+    font-size:0.9em;
+}
+.overflowno{
+    white-space: normal !important;
+}
+#smimg img{
+    width: 25px;
+    height: 25px;
+}

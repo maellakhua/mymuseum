@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title></title>
+        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+        <link href="css/ionic.app.css" rel="stylesheet">
+        -->
+        <!-- ionic/angularjs js -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <!-- cordova script (this will be a 404 during development) -->
+        <script src="js/ng-cordova.min.js"></script>
+        <script src="cordova.js"></script>
+        <!-- your app's js -->
+        <script src="js/app.js"></script>
+        <!-- google maps javascript -->
+        <!--script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script-->
+        <script src="http://maps.google.com/maps/api/js?libraries=places&sensor=false"></script>
+        <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script-->
+    </head>
+    <body ng-app="starter" ng-controller="MapCtrl">
+        
+
+        <ion-side-menus>
+        
+
+            <ion-side-menu-content>
+                <ion-header-bar class="bar-positive">
+                <button class="button button-icon icon ion-navicon" ng-click="replay()" menu-toggle="left"></button>
+                <h1 class="title" style="font-weight: bold; font-size: 1.7em;">Museum Guide</h1>
+                <button class="button button-icon icon ion-help-circled" ng-click="about()"></button>
+                </ion-header-bar>
+                <ion-content>
+                <div id="map_canvas">
+                    <google-map center="map.center" zoom="map.zoom" draggable="true" options="options"></google-map>
+                </div>
+                <div id="geo" ng-click="geoLocate()">
+                    <button class="button button-icon ion-android-locate">Track Me</button>
+                </div>
+                <ion-footer-bar id="footer" align-title="center" keyboard-attach style="margin-bottom: 1.5em;">
+       
+                <label id="search" class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input id="pac-input" class="controls" type="search" placeholder="type the name of the place to search for museums or use the track me button...">
+                </label>
+                <div id="destin" class="buttons">
+                    <button class="button button-icon button-clear ion-android-information" menu-toggle="right"></button>
+                </div>
+                </ion-footer-bar></ion-content>
+            </ion-side-menu-content>
+            
+
+
+
+            <ion-side-menu side="left" >
+                <ion-header-bar align-title="left" class="bar-dark">
+                    <h1 class="title">Settings</h1>
+                </ion-header-bar>
+                <ion-scroll class="scroll">
+                 
+  
+
+
+                    <ion-content>
+                          
+                          <div class="list">
+                            
+
+
+                            <div class="item item-divider"><i class="ion-ionic"></i> Search Radius (meters): {{data.radius}}</div>
+                            <div class="item item-divider">
+                            <ion-radio ng-repeat="item in searchRadiusList"
+                                       ng-value="item.value"
+                                       ng-model="data.radius"
+                                       ng-change="radiusselected(item)"
+                                       name="radiusvalue">
+                                       {{item.text}}
+                            </ion-radio>
+                            </div>
+
+
+                            
+                            <div class="item item-divider"><i class="ion-stats-bars"></i> Sort Method: {{data.sortmethod}}</div>
+                            <div class="item item-divider">
+                            <ion-radio ng-repeat="item in sortMethodList"
+                                       ng-value="item.value"
+                                       ng-model="data.sortmethod"
+                                       ng-change="sortmethodeselected(item)"
+                                       name="sortmethod">
+                                       {{item.text}}
+                            </ion-radio>
+                            </div>
+
+
+
+                            <div class="item item-divider"><i class="ion-arrow-graph-down-right"></i> Results Limit: {{data.resultslimit}}</div>
+                            <div class="item item-divider">
+                            <ion-radio ng-repeat="item in resultsLimitList"
+                                       ng-value="item.value"
+                                       ng-model="data.resultslimit"
+                                       ng-change="resultslimitselected(item)"
+                                       name="resultslimit">
+                                       {{item.text}}
+                            </ion-radio>
+                            </div>
+
+
+                          </div>
+                          
+                        </ion-content>
+
+
+
+
+
+
+
+
+
+
+
+                </ion-scroll>
+            </ion-side-menu>
+            
+
+
+
+
+            <ion-side-menu side="right">
+                <ion-scroll class="scroll" >
+                <div ng-repeat="item in destList| orderBy:'type'" ng-if="item.list.length > 0">
+                    <div class="item item-divider bar bar-dark" ng-click="item.showList = !item.showList">
+                        {{item.type}}
+                    </div>
+                    
+                    <div style="text-align: center; padding: 0.5em; font-size: 0.85em; font-weight: bold; line-height: 95%;">
+                       	sorting by: {{data.sortmethod}}<br>
+                       	radius: {{data.radius}}<br>
+                      	limit: {{data.resultslimit}}
+                    </div>
+
+                    <!-- <div ng-repeat="list in item.list| orderBy:'name'" ng-show="item.showList"> -->
+                    <div ng-repeat="list in item.list" ng-show="item.showList">
+                        <div class="item item-divider" style="text-align: left;" ng-click="openWindow(item.type, list)">
+                            {{list.name}}
+                        </div>
+                        <ion-list ng-show="list.opened">
+                        <ion-item id="{{list.lat}}" overflow-scroll="true" style="background-color: lightgrey;">
+                        
+                        <p class="overflowno"><strong>Museum:</strong><br>{{list.name}}</p>
+                        <p class="overflowno"><strong>Address:</strong><br>{{list.address_address}}<br>{{list.address_postalcode}} {{list.address_city}} {{list.address_state}} {{list.address_country}}</p>
+                        <p class="overflowno"><strong>Phone:</strong><br><a href="tel:{{list.phone}}" target="_blank">{{list.phone}}</a></p>
+                        <p class="overflowno"><strong>Site:</strong><br><a href="{{list.url}}" target="_blank">{{list.url}}</a></p>
+                        
+                        <div style="font-size: 0.85em;">
+                        <div class="overflowno"><strong>Distance: </strong>{{list.distance}} meters</div>
+                        <div class="overflowno"><strong>Rating: </strong>{{list.rating}}</div>
+                        <div class="overflowno"><strong>Weight: </strong>{{list.weight}}</div>
+                        </div>
+
+                        <span id="smimg" ng-switch on="list.source">
+                        <img ng-switch-when="Foursquare" src="img/4sqico.png" alt="Foursquare">
+                        </span>
+                        </a>
+                        </p>
+                        <button class="button button-block button-small button-dark ion-location" ng-click="onMap(list)" menu-close>Locate on Map</button>
+                        <button class="button button-block button-small button-dark ion-map" ng-click="calcRoute(list)" menu-close>Get Directions</button>
+                        </ion-item>
+                        </ion-list>
+                    </div>
+                </div>
+                <div>
+                </div>
+                </ion-scroll>
+            </ion-side-menu>
+
+
+
+        </ion-side-menus>
+    </body>
+</html>
