@@ -333,7 +333,8 @@ app.controller('MapCtrl', function($scope, $cordovaGeolocation, $location, $ioni
             showBackdrop: false
         });
         var geoMarker;
-        $cordovaGeolocation.getCurrentPosition().then(function(position) {
+        var options = { timeout: 30000, enableHighAccuracy: true, maximumAge: 50000 };
+        $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             $scope.position = pos;
             var infow = new google.maps.InfoWindow();
