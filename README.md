@@ -1,4 +1,4 @@
-culture_api-s_mobile_app
+My Museum App
 ========================
 Prerequisite
 ----------------------------
